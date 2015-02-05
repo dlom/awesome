@@ -1,6 +1,7 @@
 -------------------------------
 --  "Zenburn" awesome theme  --
 --    By Adrian C. (anrxc)   --
+-- Modified by Mark O (dlom) --
 -------------------------------
 
 awful = require("awful")
@@ -13,7 +14,7 @@ theme = {}
 theme.name = "zenburn"
 theme.confdir = awful.util.getdir("config")
 theme.dir = theme.confdir .. "/themes/" .. theme.name
-theme.wallpaper = theme.dir .. "/background.png"
+theme.wallpaper = theme.dir .. "/wallpaper.png"
 -- }}}
 
 -- {{{ Styles
@@ -71,8 +72,8 @@ theme.mouse_finder_color = theme.fg_urgent
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height = 15
-theme.menu_width  = 100
+theme.menu_height = 16
+theme.menu_width  = 128
 -- }}}
 
 -- {{{ Icons
@@ -113,8 +114,8 @@ theme.widget_wifi   = theme.dir .. "/icons/wifi_01.png"
 theme.widget_mail   = theme.dir .. "/icons/mail.png"
 theme.widget_vol    = theme.dir .. "/icons/spkr_01.png"
 theme.widget_date   = theme.dir .. "/icons/clock.png"
-theme.widget_sep    = theme.dir .. "/icons/separator_01.png"
-theme.widget_sep_l  = theme.dir .. "/icons/separator_02.png"
+theme.widget_sep_r  = theme.dir .. "/icons/separator_01x16.png"
+theme.widget_sep_l  = theme.dir .. "/icons/separator_02x16.png"
 -- }}}
 
 -- {{{ Titlebar

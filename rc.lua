@@ -11,9 +11,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 
-vicious = require("vicious")
-
--- awful.util.spawn("xset m 1 1")
+local vicious = require("vicious")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -64,7 +62,6 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.tile,
-    awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.tile.left,
     awful.layout.suit.floating
@@ -84,7 +81,7 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "work", "play", "other" }, s, { layouts[1], layouts[5], layouts[5] })
+    tags[s] = awful.tag({ "main", "other" }, s, { layouts[1], layouts[4], layouts[4] })
 end
 -- }}}
 
@@ -93,8 +90,7 @@ end
 myawesomemenu = {
    { "&manual", terminal .. " -x sh -c 'man awesome'" },
    { "edit &config", editor_cmd .. " " .. awesome.conffile },
-   { "&restart", awesome.restart },
-   { "&quit", awesome.quit }
+   { "&restart", awesome.restart }
 }
 
 mymainmenu = awful.menu({ items = { { "&awesome", myawesomemenu, beautiful.awesome_icon },
@@ -111,29 +107,32 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibox
 
-separator = wibox.widget.imagebox()
-separator:set_image(beautiful.widget_sep)
+separator_r = wibox.widget.imagebox()
+separator_r:set_image(beautiful.widget_sep_r)
 separator_l = wibox.widget.imagebox()
 separator_l:set_image(beautiful.widget_sep_l)
 
 wireless = true
-netinteface = "wlp2s0"
-battery = "BAT1"
+netinteface = "wlp3s0"
+battery = "BAT0"
 alsachannel = "Master"
+alsadevice = "pulse"
+alsastep = "2%"
 
 wirelessicon = wibox.widget.imagebox()
 wirelessicon:set_image(beautiful.widget_wifi)
-wirelessicon:set_resize(false)
 wirelesswidget = wibox.widget.textbox()
 if wireless then
-    vicious.register(wirelesswidget, vicious.widgets.wifi, '${ssid} ', 0.1, netinteface)
+    vicious.register(wirelesswidget, vicious.widgets.wifi, ' ${ssid} ', 0.1, netinteface)
 end
 
-hibernate = function() awful.util.spawn("systemctl hibernate", false) end
-suspend = function() awful.util.spawn("systemctl suspend", false) end
-volmute = function() awful.util.spawn("amixer set Master toggle -q", false) end
-volup = function() awful.util.spawn("amixer set -M Master 1dB+ -q", false) end
-voldown = function() awful.util.spawn("amixer set -M Master 1dB- -q", false) end
+hibernate  = function() awful.util.spawn("systemctl hibernate", false) end
+suspend    = function() awful.util.spawn("systemctl suspend", false) end
+volmute    = function() awful.util.spawn("amixer -D " .. alsadevice .. " set " .. alsachannel .. " toggle -q", false) end
+volup      = function() awful.util.spawn("amixer -D " .. alsadevice .. " set " .. alsachannel .. " " .. alsastep .."+ -q", false) end
+voldown    = function() awful.util.spawn("amixer -D " .. alsadevice .. " set " .. alsachannel .. " " .. alsastep .."- -q", false) end
+brightup   = function() awful.util.spawn("xbacklight +10", false) end
+brightdown = function() awful.util.spawn("xbacklight -10", false) end
 
 volicon = wibox.widget.imagebox()
 volicon:set_image(beautiful.widget_vol)
@@ -192,7 +191,7 @@ clockicon = wibox.widget.imagebox()
 clockicon:set_image(beautiful.widget_date)
 mytextclock = awful.widget.textclock()
 
--- Create a wlayoutibox for each screen and add it
+-- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
@@ -273,16 +272,16 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 
-    right_layout:add(separator)
+    right_layout:add(separator_r)
     right_layout:add(batwidget)
     right_layout:add(baticon)
 
-    right_layout:add(separator)
+    right_layout:add(separator_r)
     right_layout:add(volicon)
     right_layout:add(volwidget)
     right_layout:add(volbar)
 
-    right_layout:add(separator)
+    right_layout:add(separator_r)
     if wireless then
         right_layout:add(wirelessicon)
         right_layout:add(wirelesswidget)
@@ -291,7 +290,7 @@ for s = 1, screen.count() do
     right_layout:add(netwidget)
     right_layout:add(upicon)
 
-    right_layout:add(separator)
+    right_layout:add(separator_r)
     right_layout:add(clockicon)
     right_layout:add(mytextclock)
 
@@ -374,7 +373,7 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end),
+    -- awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- Multimedia
     awful.key({}, "XF86Battery", hibernate),
@@ -382,6 +381,8 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioMute", volmute),
     awful.key({}, "XF86AudioRaiseVolume", volup),
     awful.key({}, "XF86AudioLowerVolume", voldown),
+    awful.key({}, "XF86MonBrightnessUp", brightup),
+    awful.key({}, "XF86MonBrightnessDown", brightdown),
 
     -- Lock
      awful.key({ modkey }, "F12", function () awful.util.spawn("slimlock") end)
