@@ -123,7 +123,7 @@ wirelessicon = wibox.widget.imagebox()
 wirelessicon:set_image(beautiful.widget_wifi)
 wirelesswidget = wibox.widget.textbox()
 if wireless then
-    vicious.register(wirelesswidget, vicious.widgets.wifi, ' ${ssid} ', 0.1, netinteface)
+    vicious.register(wirelesswidget, vicious.widgets.wifi, " ${ssid} ", 0.1, netinteface)
 end
 
 hibernate  = function() awful.util.spawn("systemctl hibernate", false) end
@@ -175,9 +175,9 @@ volicon:buttons(volbar:buttons())
 dnicon = wibox.widget.imagebox()
 dnicon:set_image(beautiful.widget_netdn)
 netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${' .. netinteface .. ' down_kb}</span> <span color="'
-  .. beautiful.fg_netup_widget ..'">${' .. netinteface .. ' up_kb}</span>', 0.1)
+vicious.register(netwidget, vicious.widgets.net, "<span color='"
+  .. beautiful.fg_netdn_widget .. "'>${" .. netinteface .. " down_kb}</span> <span color='"
+  .. beautiful.fg_netup_widget .. "'>${" .. netinteface .. " up_kb}</span>", 0.1)
 upicon = wibox.widget.imagebox()
 upicon:set_image(beautiful.widget_netup)
 
