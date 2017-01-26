@@ -85,6 +85,8 @@ theme.taglist_squares_unsel = theme.dir .. "/icons/taglist/unsel.png"
 
 -- {{{ Misc
 theme.awesome_icon           = theme.dir .. "/awesome-icon.png"
+theme.browser_icon           = theme.dir .. "/firefox-icon.png"
+theme.terminal_icon          = theme.dir .. "/terminator-icon.png"
 theme.menu_submenu_icon      = theme.dir .. "/submenu.png"
 -- }}}
 
